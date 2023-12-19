@@ -7,7 +7,9 @@
  * trimProperties({ name: '  jane  ' }) // returns a new object { name: 'jane' }
  */
 function trimProperties(obj) {
-  // ✨ implement
+  let trimmed = structuredClone(obj)
+  for (let i in obj) trimmed[i] = obj[i].trim()
+  return trimmed
 }
 
 /**
