@@ -100,16 +100,34 @@ describe('[Exercise 5] Seasons', () => {
     expect(callNext(40)).toBe('spring')})
 })
 
-// describe('[Exercise 6] Car', () => {
-//   let focus
-//   beforeEach(() => {
-//     focus = new utils.Car('focus', 20, 30) // each test must start with a fresh car
-//   })
-//   test('[15] driving the car returns the updated odometer', () => {})
-//   test('[16] driving the car uses gas', () => {})
-//   test('[17] refueling allows to keep driving', () => {})
-//   test('[18] adding fuel to a full tank has no effect', () => {})
-// })
+describe('[Exercise 6] Car', () => {
+  let focus
+  beforeEach(() => {
+    focus = new utils.Car('focus', 20, 30) // each test must start with a fresh car
+  })
+
+  test('[15] driving the car returns the updated odometer', () => {
+    const miles = 50
+    const odometer = focus.drive(miles)
+    expect(odometer).toEqual(miles)
+  })
+  test('[16] driving the car uses gas', () => {
+    focus.drive(100)
+    expect(focus.fuel).toBeLessThan(focus.tank)
+  })
+  test('[17] refueling allows to keep driving', () => {
+    let odometer = focus.drive(601)
+    expect(odometer).toEqual(600)
+    focus.refuel(20)
+    odometer = focus.drive(20)
+    expect(odometer).toEqual(620)
+  })
+  test('[18] adding fuel to a full tank has no effect', () => {
+    focus.drive(50)
+    focus.refuel(30)
+    expect(focus.fuel).toEqual(20)
+  })
+})
 
 // describe('[Exercise 7] isEvenNumberAsync', () => {
 //   test('[19] resolves true if passed an even number', () => {})
