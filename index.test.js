@@ -105,31 +105,52 @@ describe('[Exercise 6] Car', () => {
   beforeEach(() => {
     focus = new utils.Car('focus', 20, 30) // each test must start with a fresh car
   })
+  const milesToDrive = [300, 600, 900]
+  const galToRefuel = [10, 20, 30]
 
   test('[15] driving the car returns the updated odometer', () => {
-    const miles = 50
-    const odometer = focus.drive(miles)
-    expect(odometer).toEqual(miles)
+    const odometerStart = focus.odometer
+    const returned = focus.drive(milesToDrive[0])
+    expect(returned).toEqual(focus.odometer)
+    expect(returned).not.toEqual(odometerStart)
   })
   test('[16] driving the car uses gas', () => {
-    focus.drive(100)
-    expect(focus.fuel).toBeLessThan(focus.tank)
+    const fuelStart = focus.fuel
+    focus.drive(milesToDrive[0])
+    expect(focus.fuel).toBeLessThan(fuelStart)
   })
   test('[17] refueling allows to keep driving', () => {
-    let odometer = focus.drive(601)
-    expect(odometer).toEqual(600)
-    focus.refuel(20)
-    odometer = focus.drive(20)
-    expect(odometer).toEqual(620)
+    const maxDistance = focus.tank * focus.mileage
+    const odometer = focus.drive(milesToDrive[2]) // greater than max distance
+    expect(odometer).toEqual(maxDistance)
+    expect(focus.odometer).toEqual(odometer)
+    expect(focus.fuel).toEqual(0)
+
+    focus.refuel(galToRefuel[0])
+    focus.drive(milesToDrive[0])
+    expect(focus.odometer).toBeGreaterThan(odometer)
   })
   test('[18] adding fuel to a full tank has no effect', () => {
-    focus.drive(50)
-    focus.refuel(30)
-    expect(focus.fuel).toEqual(20)
+    const fullTank = focus.tank
+    expect(focus.fuel).toEqual(fullTank)
+    focus.refuel(galToRefuel[2])
+    expect(focus.fuel).toEqual(fullTank)
   })
 })
 
-// describe('[Exercise 7] isEvenNumberAsync', () => {
-//   test('[19] resolves true if passed an even number', () => {})
-//   test('[20] resolves false if passed an odd number', () => {})
-// })
+describe('[Exercise 7] isEvenNumberAsync', () => {
+  const even = [-2, 0, 14, 136, 16748]
+  const odd = [-1, 3, 15, 137, 16749]
+  test('[19] resolves true if passed an even number', () => {
+    even.forEach(async num => {
+      const res = await utils.isEvenNumberAsync(num)
+      expect(res).toBeTruthy()
+    })
+  })
+  test('[20] resolves false if passed an odd number', () => {
+    odd.forEach(async num => {
+      const res = await utils.isEvenNumberAsync(num)
+      expect(res).toBeFalsy()
+    })
+  })
+})

@@ -160,7 +160,7 @@ class Car {
   refuel(gallons) {
     this.fuel += gallons
     if (this.fuel > this.tank) this.fuel = this.tank
-    
+
     return this.mileage * this.fuel
   }
 }
@@ -178,8 +178,11 @@ class Car {
  *    // result is false
  * })
  */
+
+const test = num => num % 2 === 0
+
 function isEvenNumberAsync(number) {
-  // ✨ implement
+  return test(number)
 }
 
 module.exports = {
